@@ -10,7 +10,15 @@
 
 <body>
 
-  <!-- ng-app -->
+  <div ng-app="app">
+    <div class="container">
+      <div ng-controller="MainCtrl as main">
+
+        <h1>{{main.header}}</h1>
+
+      </div>
+    </div>
+  </div>
 
   <script src="lib/firebase/firebase.js"></script>
   <script src="lib/angular/angular.min.js"></script>
