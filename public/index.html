@@ -14,16 +14,29 @@
     <div class="container">
       <div ng-controller="MainCtrl as main">
 
-        <h1>{{main.header}}</h1>
+        <div class="page-header">
+          <h1 class="text-center">{{main.header}}</h1>
+        </div>
 
         <div class="row">
-          <div class="column col-lg-3">
-            <h3>Jurassic Park</h3>
-            <button class="btn btn-primary" ng-click="main.voteNeill()">Vote: {{main.neill}}</button>
+          <div class="column col-lg-4 col-lg-offset-4">
+            <form class="form-inline nominate" ng-submit="main.nominate(main.submitNew)">
+              <input type="text" class="form-control" ng-model="main.submitNew.name" id="nominate" name="nominate" placeholder="Nominate a new movie" />
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
           </div>
-          <div class="column col-lg-3 col-lg-offset-1">
-            <h3>Jurassic Park: The Lost World</h3>
-            <button class="btn btn-primary" ng-click="main.voteGoldblum()">Votes: {{main.goldblum}}</button>
+        </div>
+
+        <div class="row">
+          <div class="column col-lg-6 col-lg-offset-3">
+            <table class="table table-striped table-hover">
+            <tr ng-repeat="option in main.options | toArray:true | orderBy: 'votes':true">
+              <td>
+                <h3>{{option.name}}</h3>
+                <button class="btn btn-primary" ng-click="main.castVote(option)">Votes: {{option.votes}}</button>
+              </td>
+            </tr>
+            </table>
           </div>
         </div>
 
@@ -33,6 +46,7 @@
 
   <script src="lib/firebase/firebase.js"></script>
   <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/angular-filter/dist/angular-filter.min.js"></script>
   <script src="lib/angular-route/angular-route.min.js"></script>
   <script src="app/main.js"></script>
 

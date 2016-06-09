@@ -1,4 +1,4 @@
-angular.module('app', [])
+angular.module('app', ['angular.filter'])
   .config(() => {
   // Initialize Firebase
     var config = {
@@ -9,25 +9,38 @@ angular.module('app', [])
     };
   firebase.initializeApp(config);
   })
-  .controller('MainCtrl', function($scope) {
+  .controller('MainCtrl', function($timeout) {
     const main = this;
+
+    main.options = {};
+
+    main.submitNew = {
+      votes: 0
+    }
 
     main.header = 'Welcome . . . . . to Jurassic Vote';
 
-    main.voteNeill = function() {
-      firebase.database().ref('/votes/neill').set(main.neill + 1);
+    main.castVote = function(choice) {
+      firebase.database().ref(`/votes/${choice.$key}/votes`).set(choice.votes + 1);
     }
 
-    main.voteGoldblum = function() {
-      firebase.database().ref('/votes/goldblum').set(main.goldblum + 1);
+    main.nominate = function(newMovie) {
+      $timeout(() => {
+        firebase.database().ref('/votes').push(newMovie);
+      })
     }
 
-    firebase.database().ref('/votes').on('value', function(data) {
-      const votes = data.val();
-      console.log("data: ", data.val());
-      main.neill = votes.neill;
-      main.goldblum = votes.goldblum;
-      $scope.$apply();
-    });
+  // Firebase listeners for child data updates
+    firebase.database().ref('/votes').on('child_added', function(childData) {
+      $timeout(() => {
+        main.options[childData.key] = childData.val();
+      });
+    })
+
+    firebase.database().ref('/votes').on('child_changed', function(childData) {
+      $timeout(() => {
+        main.options[childData.key] = childData.val();
+      });
+    })
 
   })
