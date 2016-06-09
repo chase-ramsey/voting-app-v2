@@ -16,6 +16,17 @@
 
         <h1>{{main.header}}</h1>
 
+        <div class="row">
+          <div class="column col-lg-3">
+            <h3>Jurassic Park</h3>
+            <button class="btn btn-primary" ng-click="main.voteNeill()">Vote: {{main.neill}}</button>
+          </div>
+          <div class="column col-lg-3 col-lg-offset-1">
+            <h3>Jurassic Park: The Lost World</h3>
+            <button class="btn btn-primary" ng-click="main.voteGoldblum()">Votes: {{main.goldblum}}</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

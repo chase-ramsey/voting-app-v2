@@ -9,8 +9,25 @@ angular.module('app', [])
     };
   firebase.initializeApp(config);
   })
-  .controller('MainCtrl', function() {
+  .controller('MainCtrl', function($scope) {
     const main = this;
 
-    main.header = 'hallo welt'
+    main.header = 'Welcome . . . . . to Jurassic Vote';
+
+    main.voteNeill = function() {
+      firebase.database().ref('/votes/neill').set(main.neill + 1);
+    }
+
+    main.voteGoldblum = function() {
+      firebase.database().ref('/votes/goldblum').set(main.goldblum + 1);
+    }
+
+    firebase.database().ref('/votes').on('value', function(data) {
+      const votes = data.val();
+      console.log("data: ", data.val());
+      main.neill = votes.neill;
+      main.goldblum = votes.goldblum;
+      $scope.$apply();
+    });
+
   })
